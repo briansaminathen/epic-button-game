@@ -13,6 +13,21 @@
             // this triggers the connection event in our server
             var socket = io.connect();
 
+            $('#push').click(function () {
+                socket.emit('push-button', {action: 'Somebody pushed the button'});
+            })
+
+            $('#reset').click(function () {
+                socket.emit('reset-counter', {action: 'Resetting Counter'});
+            })
+
+            socket.on('push-counter', function (data) {
+                $('#message').html('The Button has been pushed' + ' ' + JSON.stringify(data.response) + ' ' + 'times');
+            })
+
+            socket.on('reset-response', function (data) {
+                $('#message').html('The Counter is now' + ' ' + JSON.stringify(data.response) );
+            });
 
 
 
@@ -26,9 +41,8 @@
 
     <center>
         <h2 id="message"></h2>
-        <h4>Push the button update the count</h4>
-        <button id="push"></button>
-        <button id="reset"></button>
+        <button id="push">Push</button>
+        <button id="reset">Reset</button>
     </center>
 
 
